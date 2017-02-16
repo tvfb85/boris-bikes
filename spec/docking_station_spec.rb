@@ -1,36 +1,40 @@
 require 'docking_station'
 
 describe DockingStation do
-  it 'releases a bike' do
-    expect(DockingStation.new).to respond_to(:release_bike)
-  end
 
-  it 'docks a bike' do
-    expect(DockingStation.new).to respond_to(:dock_bike)
-  end
+  it { is_expected.to respond_to(:release_bike) }
+  it { is_expected.to respond_to(:dock_bike).with(1).argument }
 
-  it 'tests releasing the bike leaves docking station empty' do
-    expect(DockingStation.new.release_bike).to eq("The docking station is empty")
-  end
+  describe '#release_bike' do
+      it "tests that the release_bike method returns a bike" do
+          bike = Bike.new
+          subject.dock_bike(bike)
+          expect(subject.release_bike).to be_an_instance_of Bike
+      end
+        # uses rspec 'predicate' syntax
+      it "tests that the released bike is working" do
+        bike = Bike.new
+        subject.dock_bike(bike)
+          expect(subject.release_bike.working?).to eq true
+      end
 
-  it 'tests docking the bike makes docking station full' do
-    expect(DockingStation.new.dock_bike).to eq("The docking station is full")
-  end
+      it "raises an error if docking station is empty" do
+        expect {subject.release_bike}.to raise_error("No bikes available")
+      end
 
-  # it 'gets a bike' do
-  #  expect(result).to eq(Bike.new)
-  # end
-  it 'checks if a bike is working' do
-    expect(Bike.new.working?).to eq(true)
-  end
-  it 'checks if a bike is docked' do
-    expect(Bike.new.docked?).to eq(true)
-  end
+    end
 
-  # it 'checks status' do
-  #   expect(Bike.new.output).to eq(string)
-  # end
+    describe '#dock_bike' do
+      it "shows a bike that has been docked" do
+        bike = Bike.new
+        subject.dock_bike(bike)
+        expect(subject.docked).to eq(bike)
+      end
+    end
+
 end
 
-
-# it { DockingStation.new.respond_to? (:release_bike) }
+# describe DockingStation do
+#       #let(:docked) {docked = nil}
+#
+# end
