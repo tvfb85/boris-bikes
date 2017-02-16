@@ -24,22 +24,32 @@ describe DockingStation do
 
     end
 
-    describe '#dock_bike' do
-      it "shows a bike that has been docked" do
-        bike = Bike.new
-        subject.dock_bike(bike)
-        expect(subject.docked).to eq(bike)
-      end
+  describe '#dock_bike' do
 
-      it "raises an error if docking station is full" do
-        subject.dock_bike(Bike.new)
-        expect {subject.dock_bike(Bike.new)}.to raise_error("Docking station is full")
-      end
+    it "raises an error if docking station is full" do
+      20.times {subject.dock_bike(Bike.new)}
+      expect {subject.dock_bike(Bike.new)}.to raise_error("Docking station is full")
     end
 
-end
+    describe '#dock_bike returns bikes' do
 
-# describe DockingStation do
-#       #let(:docked) {docked = nil}
-#
-# end
+      before :each do
+        @bike = Bike.new
+        subject.dock_bike(@bike)
+      end
+
+      it "shows a bike that has been docked" do
+        expect(subject.bikes).to eq([@bike])
+      end
+
+      it "returns an array" do
+        expect(subject.bikes).to be_kind_of(Array)
+      end
+
+      it "adds a new bike to the end of the array" do
+        expect(subject.bikes[-1]).to eq(@bike)
+      end
+
+    end
+  end
+end

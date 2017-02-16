@@ -1,21 +1,18 @@
 class DockingStation
-  attr_reader :docked
-  # def initialize(*status)
-  #   @status = status
-  # end
+  attr_reader :bikes
+
+  def initialize
+    @bikes = []
+  end
 
   def release_bike
-    raise "No bikes available" unless @docked
-    Bike.new
-    #  @status = "empty"
-    #  "The docking station is #{@status}"
+    raise "No bikes available" unless !@bikes.empty?
+    @bikes.pop
   end
 
   def dock_bike(bike)
-    raise "Docking station is full" unless !@docked
-    @docked = bike
-    #  @status = "full"
-    #  "The docking station is #{@status}"
+    raise "Docking station is full" unless @bikes.count < 20
+    @bikes.push(bike)
   end
 
 end
