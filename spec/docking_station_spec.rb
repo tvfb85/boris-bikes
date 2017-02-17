@@ -4,6 +4,22 @@ describe DockingStation do
 
   it { is_expected.to respond_to(:release_bike) }
   it { is_expected.to respond_to(:dock_bike).with(1).argument }
+  # it { is_expected.to respond_to(:new).with(1).argument }
+  #
+  # describe '.new' do
+  #   it 'takes one argument' do
+  #     expect(subject("a")).to respond_to(:new).with(1).argument
+  #   end
+  # end
+
+  it "instantiates new docking stations with a default capacity of 20" do
+    expect(subject.capacity).to eq 20
+  end
+
+  it "allows the user to set capacity when instantiating a new docking station" do
+    subject.capacity = 25
+    expect(subject.capacity).to eq 25
+  end
 
   describe '#release_bike' do
       it "tests that the release_bike method returns a bike" do
@@ -27,7 +43,7 @@ describe DockingStation do
   describe '#dock_bike' do
 
     it "raises an error if docking station is full" do
-      DockingStation::DEFAULT_CAPACITY.times do
+      (subject.capacity).times do
         subject.dock_bike(Bike.new)
       end
       expect {subject.dock_bike(Bike.new)}.to raise_error("Docking station is full")
